@@ -4,6 +4,8 @@ import cors from 'cors';
 import { env } from './utils/env.js';
 import contactsRouter from './routers/contacts.js';
 
+import { HttpError } from 'http-errors';
+
 const PORT = Number(env('PORT', '3000'));
 
 export const setupServer = () => {
@@ -20,18 +22,32 @@ export const setupServer = () => {
 
   app.use(contactsRouter);
 
-  app.use('*', (req, res) => {
+  const notFoundHandler = (err, req, res) => {
     res.status(404).json({
-      message: 'Not found',
+      status: 404,
+      message: 'Route not found',
     });
-  });
+  };
 
-  app.use((err, res) => {
+  app.use(notFoundHandler);
+
+  const errorHandler = (err, req, res, next) => {
+    if (err instanceof HttpError) {
+      res.status(err.status).json({
+        status: err.status,
+        message: err.name,
+        data: err,
+      });
+      return;
+    }
     res.status(500).json({
+      status: 500,
       message: 'Something went wrong',
-      error: err.message,
+      data: err,
     });
-  });
+  };
+
+  app.use(errorHandler);
 
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
