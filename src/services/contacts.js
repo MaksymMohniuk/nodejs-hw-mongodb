@@ -8,7 +8,7 @@ export const getContactById = async (id) => {
   return await Contact.findById(id);
 };
 
-export const createContact = async (payload) => {
+export const upsertContact = async (payload) => {
   const contact = await Contact.create(payload);
   return contact;
 };
