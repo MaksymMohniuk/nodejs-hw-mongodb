@@ -13,8 +13,8 @@ export const createContact = async (payload) => {
   return contact;
 };
 
-export const upsertContact = async (payload) => {
-  const contact = await Contact.create(payload);
+export const upsertContact = async (id, payload) => {
+  const contact = await Contact.findByIdAndUpdate(id, payload);
   return contact;
 };
 
