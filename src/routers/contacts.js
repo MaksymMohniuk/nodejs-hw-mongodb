@@ -6,18 +6,9 @@ import {
   patchContactController,
   deleteContactController,
 } from '../controllers/contacts.js';
+import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 
 const router = Router();
-
-export const ctrlWrapper = (controller) => {
-  return async (req, res, next) => {
-    try {
-      await controller(req, res, next);
-    } catch (err) {
-      next(err);
-    }
-  };
-};
 
 router.get('/contacts', ctrlWrapper(getContactsController));
 
