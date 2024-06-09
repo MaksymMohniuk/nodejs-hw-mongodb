@@ -6,10 +6,17 @@ export const getAllContacts = async ({
   perPage = 10,
   sortOrder = 'asc',
   sortBy = '_id',
+  filter = {},
 }) => {
   const limit = perPage;
   const skip = (page - 1) * perPage;
   const contactsQuery = Contact.find();
+  if (filter.type) {
+    contactsQuery.where('type').equals(filter.type);
+  }
+  if (typeof filter.isFavourite === 'boolean') {
+    contactsQuery.where('isFavourite').equals(filter.isFavourite);
+  }
   const contactsCount = await Contact.countDocuments();
   const contacts = await contactsQuery
     .skip(skip)
