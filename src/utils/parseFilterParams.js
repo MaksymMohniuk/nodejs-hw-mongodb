@@ -6,8 +6,11 @@ const parseContactType = (type) => {
 };
 
 const parseBoolean = (isFavourite) => {
-  if (typeof isFavourite !== 'boolean') return;
-  return isFavourite;
+  if (typeof isFavourite === 'boolean') return isFavourite;
+  if (typeof isFavourite === 'string') {
+    if (isFavourite.toLowerCase() === 'true') return true;
+    if (isFavourite.toLowerCase() === 'false') return false;
+  }
 };
 
 export const parseFilterParams = (query) => {
