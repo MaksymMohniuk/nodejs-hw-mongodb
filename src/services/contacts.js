@@ -1,5 +1,6 @@
 import { Contact } from '../db/Contact.js';
 import { calculatePaginationData } from '../utils/calculatePaginationData.js';
+import { parseFilterParams } from '../utils/parseFilterParams.js';
 
 export const getAllContacts = async ({
   page = 1,
@@ -11,11 +12,12 @@ export const getAllContacts = async ({
   const limit = perPage;
   const skip = (page - 1) * perPage;
   const contactsQuery = Contact.find();
-  if (filter.type) {
-    contactsQuery.where('type').equals(filter.type);
+  const { type, isFavourite } = parseFilterParams(filter);
+  if (type !== null && type !== undefined) {
+    contactsQuery.where('type').equals(type);
   }
-  if (typeof filter.isFavourite === 'boolean') {
-    contactsQuery.where('isFavourite').equals(filter.isFavourite);
+  if (isFavourite !== null && isFavourite !== undefined) {
+    contactsQuery.where('isFavourite').equals(isFavourite);
   }
   const contactsCount = await Contact.countDocuments();
   const contacts = await contactsQuery
