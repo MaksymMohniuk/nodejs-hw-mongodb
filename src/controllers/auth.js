@@ -1,5 +1,5 @@
-import { registerUser } from '../services/auth';
-import { loginUser } from '../services/auth';
+import { registerUser } from '../services/auth.js';
+import { loginUser } from '../services/auth.js';
 
 const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
 

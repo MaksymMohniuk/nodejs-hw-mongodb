@@ -1,7 +1,7 @@
 import createHttpError from 'http-errors';
 import { UsersCollection } from '../db/user.js';
 import bcrypt from 'bcrypt';
-import { randomBytes } from 'crypto-js';
+import { randomBytes } from 'crypto';
 import { sessionsCollection } from '../db/session.js';
 
 const FIFTEEN_MINUTES = 15 * 60 * 1000;
