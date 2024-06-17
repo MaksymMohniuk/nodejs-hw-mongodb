@@ -8,6 +8,7 @@ import {
   refreshUserSessionController,
   registerUserController,
 } from '../controllers/auth.js';
+import { authanticate } from '../middlewares/authanticate.js';
 
 const router = Router();
 
@@ -22,6 +23,8 @@ router.post(
   validateBody(loginUserSchema),
   ctrlWrapper(loginUserController),
 );
+
+router.use(authanticate);
 
 router.post('/refresh', ctrlWrapper(refreshUserSessionController));
 
