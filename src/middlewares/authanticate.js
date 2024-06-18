@@ -9,14 +9,14 @@ export const authanticate = async (req, res, next) => {
     return;
   }
 
-  const bearer = authHeader.split('')[0];
-  const token = authHeader.split('')[1];
+  const bearer = authHeader.split(' ')[0];
+  const token = authHeader.split(' ')[1];
   if (!bearer || !token) {
     next(createHttpError(401, 'Auth header should be of type Bearer'));
     return;
   }
 
-  const session = await usersCollection.findOne({ accessToken: token });
+  const session = await sessionsCollection.findOne({ accessToken: token });
   if (!session) {
     next(createHttpError(401, 'Session not found'));
     return;
@@ -28,7 +28,7 @@ export const authanticate = async (req, res, next) => {
     return;
   }
 
-  const user = sessionsCollection.findById(session.userId);
+  const user = usersCollection.findById(session.userId);
   if (!user) {
     next(createHttpError(401, 'User is not found!'));
     return;
