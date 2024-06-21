@@ -23,12 +23,12 @@ export const authanticate = async (req, res, next) => {
   }
   const isAccessTokenExpired =
     new Date() > new Date(session.accessTokenValidUntil);
-  if (!isAccessTokenExpired) {
+  if (isAccessTokenExpired) {
     next(createHttpError(401, 'Access token expired!'));
     return;
   }
 
-  const user = usersCollection.findById(session.userId);
+  const user = await usersCollection.findById(session.userId);
   if (!user) {
     next(createHttpError(401, 'User is not found!'));
     return;
