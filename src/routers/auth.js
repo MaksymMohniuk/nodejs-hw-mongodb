@@ -24,9 +24,9 @@ router.post(
   ctrlWrapper(loginUserController),
 );
 
-router.use(authanticate);
-
 router.post('/refresh', ctrlWrapper(refreshUserSessionController));
+
+router.use(authanticate);
 
 router.post('/logout', ctrlWrapper(logoutUserController));
 
