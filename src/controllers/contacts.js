@@ -79,7 +79,8 @@ export const patchContactController = async (req, res, next) => {
 };
 
 export const deleteContactController = async (req, res, next) => {
-  const { contactId, user } = req.params;
+  const { contactId } = req.params;
+  const { user } = req;
   const contact = await deleteContact(contactId, user._id);
 
   if (!contact) {
