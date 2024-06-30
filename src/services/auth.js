@@ -3,6 +3,10 @@ import { usersCollection } from '../db/user.js';
 import bcrypt from 'bcrypt';
 import { randomBytes } from 'crypto';
 import { sessionsCollection } from '../db/session.js';
+import jwt from 'jsonwebtoken';
+import env from '../utils/env.js';
+import { sendEmail } from '../utils/sendEmail.js';
+import { SMTP } from '../constants/index.js';
 
 const FIFTEEN_MINUTES = 15 * 60 * 1000;
 const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
@@ -82,4 +86,26 @@ export const refreshUsersSession = async ({ refreshToken }) => {
 
 export const logoutUser = async (refreshToken) => {
   await sessionsCollection.deleteOne({ refreshToken });
+};
+
+export const requestResetToken = async (email) => {
+  const user = await usersCollection.findOne({ email });
+  if (!user) {
+    throw createHttpError(404, 'User is not found');
+  }
+  const resetToken = jwt.sign(
+    {
+      sub: user._id,
+      email,
+    },
+    env('JWT_SECRET'),
+    { expiresIn: '15m' },
+  );
+
+  await sendEmail({
+    from: env(SMTP.SMTP_FROM),
+    to: email,
+    subject: 'Reset your password',
+    html: `<p>Click <a href="${resetToken}">here</a> to reset your password!</p>`,
+  });
 };
