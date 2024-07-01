@@ -5,3 +5,5 @@ export const SMTP = {
   SMTP_PASSWORD: 'SMTP_PASSWORD',
   SMTP_FROM: 'SMTP_FROM',
 };
+
+export const JWT_SECRET = 'JWT_SECRET';
