@@ -4,9 +4,9 @@ import bcrypt from 'bcrypt';
 import { randomBytes } from 'crypto';
 import { sessionsCollection } from '../db/session.js';
 import jwt from 'jsonwebtoken';
-import env from '../utils/env.js';
+import { env } from '../utils/env.js';
 import { sendEmail } from '../utils/sendEmail.js';
-import { SMTP } from '../constants/index.js';
+import { JWT_SECRET, SMTP } from '../constants/index.js';
 
 const FIFTEEN_MINUTES = 15 * 60 * 1000;
 const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
@@ -98,14 +98,50 @@ export const requestResetToken = async (email) => {
       sub: user._id,
       email,
     },
-    env('JWT_SECRET'),
+    env(JWT_SECRET),
     { expiresIn: '15m' },
   );
+  try {
+    await sendEmail({
+      to: email,
+      from: env(SMTP.SMTP_USER),
+      subject: 'Reset your password',
+      html: `<p>Click <a href="${env(
+        SMTP.SMTP_FROM,
+      )}/reset-password?token=${resetToken}">here</a> to reset your password!</p>`,
+    });
+  } catch (err) {
+    console.log(err);
+    throw createHttpError(
+      500,
+      'Failed to send the email, please try again later.',
+    );
+  }
+};
 
-  await sendEmail({
-    from: env(SMTP.SMTP_FROM),
-    to: email,
-    subject: 'Reset your password',
-    html: `<p>Click <a href="${resetToken}">here</a> to reset your password!</p>`,
+export const resetPassword = async (payload) => {
+  let entries;
+  try {
+    entries = jwt.verify(payload.token, env(JWT_SECRET));
+  } catch (err) {
+    if (err instanceof Error)
+      throw createHttpError(401, 'Token is expired or invalid.');
+    throw err;
+  }
+
+  const user = await usersCollection.findOne({
+    email: entries.email,
+    _id: entries.sub,
   });
+
+  if (!user) {
+    throw createHttpError(404, 'User is not found');
+  }
+
+  const encryptedPassword = await bcrypt.hash(payload.password, 10);
+
+  await usersCollection.findOneAndUpdate(
+    { _id: user._id },
+    { password: encryptedPassword },
+  );
 };
