@@ -104,7 +104,7 @@ export const requestResetToken = async (email) => {
   try {
     await sendEmail({
       to: email,
-      from: env(SMTP.SMTP_USER),
+      from: env(SMTP.SMTP_FROM),
       subject: 'Reset your password',
       html: `<p>Click <a href="${env(
         SMTP.APP_DOMAIN,
@@ -144,4 +144,6 @@ export const resetPassword = async (payload) => {
     { _id: user._id },
     { password: encryptedPassword },
   );
+
+  await sessionsCollection.deleteOne({ userId: user._id });
 };
