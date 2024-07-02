@@ -107,7 +107,7 @@ export const requestResetToken = async (email) => {
       from: env(SMTP.SMTP_USER),
       subject: 'Reset your password',
       html: `<p>Click <a href="${env(
-        SMTP.SMTP_FROM,
+        SMTP.APP_DOMAIN,
       )}/reset-password?token=${resetToken}">here</a> to reset your password!</p>`,
     });
   } catch (err) {
