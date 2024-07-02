@@ -4,6 +4,7 @@ export const SMTP = {
   SMTP_USER: 'SMTP_USER',
   SMTP_PASSWORD: 'SMTP_PASSWORD',
   SMTP_FROM: 'SMTP_FROM',
+  APP_DOMAIN: 'APP_DOMAIN',
 };
 
 export const JWT_SECRET = 'JWT_SECRET';
