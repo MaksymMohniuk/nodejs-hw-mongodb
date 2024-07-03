@@ -5,6 +5,7 @@ import { env } from './utils/env.js';
 import router from './routers/index.js';
 import { errorHandler, notFoundHandler } from './middlewares/middlewares.js';
 import cookieParser from 'cookie-parser';
+import { UPLOAD_DIR } from './constants/index.js';
 
 const PORT = Number(env('PORT', '3000'));
 
@@ -12,6 +13,7 @@ export const setupServer = () => {
   const app = express();
   app.use(express.json());
   app.use(cors());
+  app.use(cookieParser());
   app.use(
     pino({
       transport: {
@@ -20,7 +22,7 @@ export const setupServer = () => {
     }),
   );
 
-  app.use(cookieParser());
+  app.use('/uploads', express.static(UPLOAD_DIR));
 
   app.use(router);
 

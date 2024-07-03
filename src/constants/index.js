@@ -1,3 +1,5 @@
+import path from 'node:path';
+
 export const SMTP = {
   SMTP_HOST: 'SMTP_HOST',
   SMTP_PORT: 'SMTP_PORT',
@@ -14,3 +16,6 @@ export const CLOUDINARY = {
   API_KEY: 'API_KEY',
   API_SECRET: 'API_SECRET',
 };
+
+export const TEMP_UPLOAD_DIR = path.join(process.cwd(), 'temp');
+export const UPLOAD_DIR = path.join(process.cwd(), 'uploads');
