@@ -33,13 +33,13 @@ router.post(
 
 router.post('/refresh', ctrlWrapper(refreshUserSessionController));
 
-router.use(authanticate);
-
 router.post(
   '/send-reset-email',
   validateBody(requestResetEmailSchema),
   ctrlWrapper(requestResetEmailController),
 );
+
+router.use(authanticate);
 
 router.post(
   '/reset-pwd',
