@@ -15,7 +15,6 @@ import {
   requestResetEmailController,
   resetPasswordController,
 } from '../controllers/auth.js';
-import { authanticate } from '../middlewares/authanticate.js';
 
 const router = Router();
 
@@ -38,8 +37,6 @@ router.post(
   validateBody(requestResetEmailSchema),
   ctrlWrapper(requestResetEmailController),
 );
-
-router.use(authanticate);
 
 router.post(
   '/reset-pwd',
