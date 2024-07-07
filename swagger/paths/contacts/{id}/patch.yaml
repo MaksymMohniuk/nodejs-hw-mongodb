@@ -1,0 +1,119 @@
+tags:
+  - Contacts
+summary: Update contact
+operationId: updateContact
+description: Update a contact's data
+security:
+  - bearerAuth: []
+parameters:
+  - in: path
+    name: id
+    required: true
+    schema:
+      type: string
+      example: '667abd055b7c7f7680f50275'
+requestBody:
+  description: Update a contact's data
+  required: false
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        properties:
+          name:
+            type: string
+            example: Barry Moore
+          phoneNumber:
+            type: string
+            example: '85448796598'
+          email:
+            type: string
+            example: test@gmail.com
+          isFavorite:
+            type: boolean
+            example: true
+          contactType:
+            type: string
+            enum:
+              - work
+              - home
+              - personal
+            example: personal
+          photo:
+            description: Contact's photo or avatar
+            type: string
+            format: binary
+            example: https://res.cloudinary.com/dlfilpb3i/image/upload/v1720072510/mh8xuyoz…
+      encoding:
+        photo:
+          contentType: image/*
+      examples:
+        example1:
+          summary: Example with photo
+          value:
+            phoneNumber: '+3809999999'
+            email: isidora_duncan@ui.com
+            photo: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMTEhUTExMVF...
+    application/json:
+      schema:
+        type: object
+        properties:
+          phoneNumber:
+            type: string
+            example: '98968595985987'
+          email:
+            type: string
+            example: Barry_Moore@gmail.com
+responses:
+  '200':
+    description: Contact updated successfully
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            _id:
+              description: Contact's id
+              type: string
+              example: 667abd055b7c7f7680f50275
+            name:
+              description: Contact's name
+              type: string
+              example: Bobby Brown
+            phoneNumber:
+              description: Contact's phone number
+              type: string
+              example: '76078087607'
+            email:
+              description: Contact's email
+              type: string
+              example: bobby_browm@gmail.com
+            isFavorite:
+              description: True if contact is favorite
+              type: boolean
+              example: true
+            contactType:
+              description: Contact's type
+              type: string
+              enum: ['work', 'home', 'personal']
+              example: personal
+            photo:
+              description: Link to contact's photo or avatar
+              type: string
+              example: https://res.cloudinary.com/dlfilpb3i/image/upload/v1720072510/mh8xuyoz…
+            userId:
+              description: Contact's user id
+              type: string
+              example: '667abd055b7c7f7680f50275'
+            createdAt:
+              description: Database timestamp
+              type: string
+              example: '2024-07-03T06:57:37.749+00:00'
+            updatedAt:
+              description: Database timestamp
+              type: string
+              example: '2024-07-03T06:57:37.749+00:00'
+  '401':
+    $ref: ../../../components/responses/401.yaml
+  '404':
+    $ref: ../../../components/responses/404.yaml
