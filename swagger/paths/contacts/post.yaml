@@ -11,8 +11,6 @@ requestBody:
       schema:
         type: object
         required:
-          - name
-          - phoneNumber
           - userId
         properties:
           name:
