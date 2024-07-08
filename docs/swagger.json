@@ -540,8 +540,7 @@
                 "type": "object",
                 "required": [
                   "name",
-                  "phoneNumber",
-                  "userId"
+                  "phoneNumber"
                 ],
                 "properties": {
                   "name": {
@@ -553,11 +552,6 @@
                     "description": "Contact's phone number",
                     "type": "string",
                     "example": "123456789"
-                  },
-                  "userId": {
-                    "description": "Contact's user id",
-                    "type": "string",
-                    "example": "65e4decdd286b30065d54af9"
                   },
                   "email": {
                     "description": "Contact's email",
@@ -596,7 +590,6 @@
                   "value": {
                     "name": "Bobby Brown",
                     "phoneNumber": "667485456465486",
-                    "userId": "12356958523211",
                     "email": "bobby_browm@gmail.com",
                     "isFavorite": true,
                     "contactType": "work",
